@@ -31,6 +31,8 @@ extension MapInformationCellViewModel: Hashable {
 // MARK: - Equatable
 extension MapInformationCellViewModel: Equatable {
     static func == (lhs: MapInformationCellViewModel, rhs: MapInformationCellViewModel) -> Bool {
-        return true
+        return KeyPathEqualizer(lhs: lhs, rhs: rhs)
+            .compare(by: \.id)
+            .build()
     }
 }

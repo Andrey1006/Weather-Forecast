@@ -41,6 +41,12 @@ extension AttributesInformationCellViewModel: Hashable {
 // MARK: - Equatable
 extension AttributesInformationCellViewModel: Equatable {
     static func == (lhs: AttributesInformationCellViewModel, rhs: AttributesInformationCellViewModel) -> Bool {
-        return true
+        return KeyPathEqualizer(lhs: lhs, rhs: rhs)
+            .compare(by: \.id)
+            .compare(by: \.title)
+            .compare(by: \.value)
+            .compare(by: \.explanation)
+            .compare(by: \.description)
+            .build()
     }
 }

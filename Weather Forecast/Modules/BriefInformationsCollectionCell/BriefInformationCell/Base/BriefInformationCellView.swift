@@ -28,6 +28,7 @@ final class BriefInformationCellView: UIView, NibLoadable {
     func configure(viewModel: BriefInformationCellViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.date
+        imageView.image = viewModel.image
         valueLabel.text = viewModel.temperature
         apply(layout: viewModel.layout)
     }

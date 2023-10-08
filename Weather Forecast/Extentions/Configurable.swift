@@ -27,6 +27,17 @@ public extension UICollectionViewCell {
         modification?(cell)
         cell.configure(viewModel: viewModel)
     }
+    
+//    func configure<Cell, ViewModel>(
+//        as cellType: Cell.Type,
+//        with viewModel: ViewModel,
+//        andApply modification: ((Cell) -> Void)? = nil
+//    ) where Cell: ConfigurableCollectionCell, Cell.ViewModel == ViewModel {
+//        guard let cell = self as? Cell else { return }
+//        
+//        modification?(cell)
+//        cell.configure(viewModel: viewModel)
+//    }
 }
 
 public protocol ConfigurableTableCell {

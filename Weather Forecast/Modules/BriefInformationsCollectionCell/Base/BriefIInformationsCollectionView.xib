@@ -15,7 +15,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="MzZ-ni-W52">
-                    <rect key="frame" x="16" y="0.0" width="644" height="280"/>
+                    <rect key="frame" x="24" y="0.0" width="628" height="280"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="B4f-es-Zw5">
                         <size key="itemSize" width="128" height="128"/>
@@ -29,8 +29,8 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="MzZ-ni-W52" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CFD-I0-X7p"/>
-                <constraint firstItem="MzZ-ni-W52" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="KIN-ZX-ExI"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="MzZ-ni-W52" secondAttribute="trailing" constant="16" id="xI0-i3-B8C"/>
+                <constraint firstItem="MzZ-ni-W52" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="KIN-ZX-ExI"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="MzZ-ni-W52" secondAttribute="trailing" constant="24" id="xI0-i3-B8C"/>
                 <constraint firstAttribute="bottom" secondItem="MzZ-ni-W52" secondAttribute="bottom" id="y6h-yC-ly7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

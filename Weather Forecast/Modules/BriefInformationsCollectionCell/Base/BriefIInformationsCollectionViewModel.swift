@@ -21,7 +21,7 @@ struct BriefIInformationsCollectionViewModel: BaseCellViewModel {
     }
     
     private mutating func calculateSize(width: CGFloat) {
-        size = .init(width: width, height: 150)
+        size = .init(width: width, height: 130)
     }
 }
 
@@ -38,6 +38,9 @@ extension BriefIInformationsCollectionViewModel: Equatable {
         lhs: BriefIInformationsCollectionViewModel,
         rhs: BriefIInformationsCollectionViewModel
     )-> Bool {
-        return true
+        return KeyPathEqualizer(lhs: lhs, rhs: rhs)
+            .compare(by: \.id)
+            .compare(by: \.items)
+            .build()
     }
 }
