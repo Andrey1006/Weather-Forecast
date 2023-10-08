@@ -15,8 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window: UIWindow = .init(windowScene: windowScene)
-        let vc = WeatherForecastModuleBuilder().build()
-        window.rootViewController = vc
+        let viewController: WeatherForecastViewController = .instantiate(from: .main)
+        window.rootViewController = viewController
         self.window = window
         window.makeKeyAndVisible()
     }

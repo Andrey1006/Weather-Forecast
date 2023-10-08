@@ -175,141 +175,141 @@ extension UICollectionViewDiffableDataSource {
         return snapshot().itemIdentifiers
     }
     
-    // MARK: BaseDataSource based
-    // input
-//    public convenience init<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for collectionView: UICollectionView,
-//        cellProvider: @escaping (UICollectionView, IndexPath, Cell) -> UICollectionViewCell?
-//    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer>, ItemIdentifierType == LinkedCellViewModel<ID, Cell> {
-//        self.init(collectionView: collectionView, cellProvider: { collectionView, indexPath, cellViewModel in
-//            cellProvider(collectionView, indexPath, cellViewModel.source)
-//        })
-//    }
+//     MARK: BaseDataSource based
+//     input
+    public convenience init<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for collectionView: UICollectionView,
+        cellProvider: @escaping (UICollectionView, IndexPath, Cell) -> UICollectionViewCell?
+    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer>, ItemIdentifierType == LinkedCellViewModel<ID, Cell> {
+        self.init(collectionView: collectionView, cellProvider: { collectionView, indexPath, cellViewModel in
+            cellProvider(collectionView, indexPath, cellViewModel.source)
+        })
+    }
     
-//    public func apply<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        headerProvider: ((UICollectionView, IndexPath, Header) -> UICollectionReusableView?)? = nil,
-//        footerProvider: ((UICollectionView, IndexPath, Footer) -> UICollectionReusableView?)? = nil
-//    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        self.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
-//            guard let sectionViewModel = self?.sectionViewModel(at: indexPath.section) else {
-//                return nil
-//            }
-//
-//            if kind == UICollectionView.elementKindSectionHeader {
-//                guard let headerViewModel: Header = sectionViewModel.header else {
-//                    return nil
-//                }
-//
-//                return headerProvider?(collectionView, indexPath, headerViewModel)
-//            } else {
-//                guard let footerViewModel: Footer = sectionViewModel.footer else {
-//                    return nil
-//                }
-//
-//                return footerProvider?(collectionView, indexPath, footerViewModel)
-//            }
-//        }
-//    }
-//
-////     output
-//    public func insets<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: UIEdgeInsets = .zero
-//    ) -> UIEdgeInsets where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).map(\.insets) ?? defaultValue
-//    }
-//
-//    public func lineSpacing<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGFloat = .zero
-//    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).map(\.lineSpacing) ?? defaultValue
-//    }
-//
-//    public func interitemSpacing<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGFloat = .zero
-//    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).map(\.interitemSpacing) ?? defaultValue
-//    }
-//
-//    public func itemSize(
-//        for indexPath: IndexPath,
-//        defaultValue: CGSize = .init(width: 1, height: 1)
-//    ) -> CGSize where ItemIdentifierType: BaseCellViewModel {
-//        return itemViewModel(at: indexPath).map(\.size) ?? defaultValue
-//    }
-//
-//    public func headerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGSize = .init(width: 0, height: 0)
-//    ) -> CGSize where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).flatMap(\.header?.size) ?? defaultValue
-//    }
-//
-//    public func footerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGSize = .init(width: 0, height: 0)
-//    ) -> CGSize where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).flatMap(\.footer?.size) ?? defaultValue
-//    }
-//}
-//
-//// MARK: - UITableViewDiffableDataSource
-//extension UITableViewDiffableDataSource {
-//    // MARK: Base
-//    public func sectionViewModel(at section: Int) -> SectionIdentifierType? {
-//        return snapshot().sectionIdentifiers[safe: section]
-//    }
-//
-//    public func itemViewModel(in section: SectionIdentifierType, at index: Int) -> ItemIdentifierType? {
-//        return snapshot().itemIdentifiers(inSection: section)[safe: index]
-//    }
-//
-//    public func itemViewModel(at indexPath: IndexPath) -> ItemIdentifierType? {
-//        let snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> = snapshot()
-//
-//        return snapshot.sectionIdentifiers[safe: indexPath.section].flatMap { section in
-//            return snapshot.itemIdentifiers(inSection: section)[safe: indexPath.item]
-//        }
-//    }
-//
-//    public func itemViewModels(at indexPaths: [IndexPath]) -> [ItemIdentifierType] {
-//        return indexPaths.compactMap(itemViewModel(at:))
-//    }
-//
-//    public var allItemViewModels: [ItemIdentifierType] {
-//        return snapshot().itemIdentifiers
-//    }
-//
-//    // MARK: BaseDataSource based
-//    public convenience init<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for tableView: UITableView,
-//        cellProvider: @escaping (UITableView, IndexPath, Cell) -> UITableViewCell?
-//    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer>, ItemIdentifierType == LinkedCellViewModel<ID, Cell> {
-//        self.init(tableView: tableView, cellProvider: { tableView, indexPath, cellViewModel in
-//            cellProvider(tableView, indexPath, cellViewModel.source)
-//        })
-//    }
-//
-//    public func itemHeight(
-//        for indexPath: IndexPath,
-//        defaultValue: CGFloat = 1
-//    ) -> CGFloat where ItemIdentifierType: BaseCellViewModel {
-//        return itemViewModel(at: indexPath).map(\.height) ?? defaultValue
-//    }
-//
-//    public func headerHeight<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGFloat = 0
-//    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).flatMap(\.header?.height) ?? defaultValue
-//    }
-//
-//    public func footerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
-//        for section: Int,
-//        defaultValue: CGFloat = 0
-//    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
-//        return sectionViewModel(at: section).flatMap(\.footer?.height) ?? defaultValue
-//    }
+    public func apply<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        headerProvider: ((UICollectionView, IndexPath, Header) -> UICollectionReusableView?)? = nil,
+        footerProvider: ((UICollectionView, IndexPath, Footer) -> UICollectionReusableView?)? = nil
+    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        self.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+            guard let sectionViewModel = self?.sectionViewModel(at: indexPath.section) else {
+                return nil
+            }
+
+            if kind == UICollectionView.elementKindSectionHeader {
+                guard let headerViewModel: Header = sectionViewModel.header else {
+                    return nil
+                }
+
+                return headerProvider?(collectionView, indexPath, headerViewModel)
+            } else {
+                guard let footerViewModel: Footer = sectionViewModel.footer else {
+                    return nil
+                }
+
+                return footerProvider?(collectionView, indexPath, footerViewModel)
+            }
+        }
+    }
+
+//     output
+    public func insets<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: UIEdgeInsets = .zero
+    ) -> UIEdgeInsets where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).map(\.insets) ?? defaultValue
+    }
+
+    public func lineSpacing<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGFloat = .zero
+    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).map(\.lineSpacing) ?? defaultValue
+    }
+
+    public func interitemSpacing<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGFloat = .zero
+    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).map(\.interitemSpacing) ?? defaultValue
+    }
+
+    public func itemSize(
+        for indexPath: IndexPath,
+        defaultValue: CGSize = .init(width: 1, height: 1)
+    ) -> CGSize where ItemIdentifierType: BaseCellViewModel {
+        return itemViewModel(at: indexPath).map(\.size) ?? defaultValue
+    }
+
+    public func headerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGSize = .init(width: 0, height: 0)
+    ) -> CGSize where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).flatMap(\.header?.size) ?? defaultValue
+    }
+
+    public func footerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGSize = .init(width: 0, height: 0)
+    ) -> CGSize where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).flatMap(\.footer?.size) ?? defaultValue
+    }
+}
+
+// MARK: - UITableViewDiffableDataSource
+extension UITableViewDiffableDataSource {
+    // MARK: Base
+    public func sectionViewModel(at section: Int) -> SectionIdentifierType? {
+        return snapshot().sectionIdentifiers[safe: section]
+    }
+
+    public func itemViewModel(in section: SectionIdentifierType, at index: Int) -> ItemIdentifierType? {
+        return snapshot().itemIdentifiers(inSection: section)[safe: index]
+    }
+
+    public func itemViewModel(at indexPath: IndexPath) -> ItemIdentifierType? {
+        let snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> = snapshot()
+
+        return snapshot.sectionIdentifiers[safe: indexPath.section].flatMap { section in
+            return snapshot.itemIdentifiers(inSection: section)[safe: indexPath.item]
+        }
+    }
+
+    public func itemViewModels(at indexPaths: [IndexPath]) -> [ItemIdentifierType] {
+        return indexPaths.compactMap(itemViewModel(at:))
+    }
+
+    public var allItemViewModels: [ItemIdentifierType] {
+        return snapshot().itemIdentifiers
+    }
+
+    // MARK: BaseDataSource based
+    public convenience init<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for tableView: UITableView,
+        cellProvider: @escaping (UITableView, IndexPath, Cell) -> UITableViewCell?
+    ) where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer>, ItemIdentifierType == LinkedCellViewModel<ID, Cell> {
+        self.init(tableView: tableView, cellProvider: { tableView, indexPath, cellViewModel in
+            cellProvider(tableView, indexPath, cellViewModel.source)
+        })
+    }
+
+    public func itemHeight(
+        for indexPath: IndexPath,
+        defaultValue: CGFloat = 1
+    ) -> CGFloat where ItemIdentifierType: BaseCellViewModel {
+        return itemViewModel(at: indexPath).map(\.height) ?? defaultValue
+    }
+
+    public func headerHeight<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGFloat = 0
+    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).flatMap(\.header?.height) ?? defaultValue
+    }
+
+    public func footerSize<ID: Hashable, Header: BaseHeaderViewModel, Cell: BaseCellViewModel, Footer: BaseFooterViewModel>(
+        for section: Int,
+        defaultValue: CGFloat = 0
+    ) -> CGFloat where SectionIdentifierType == BaseSectionViewModel<ID, Header, Cell, Footer> {
+        return sectionViewModel(at: section).flatMap(\.footer?.height) ?? defaultValue
+    }
 }

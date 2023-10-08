@@ -20,8 +20,13 @@ final class MapInformationCellView: UIView, NibLoadable {
     }
     
     func initialSetup() {
+        contentContainerView.backgroundColor = .gray
         contentContainerView.layer.cornerRadius = 12
         mapView.layer.cornerRadius = 8
+        let ttest: CLLocationCoordinate2D = .init(latitude: 50.43, longitude: 30.52)
+        mapView.centerCoordinate = ttest
+        mapView.isScrollEnabled = false
+        mapView.isZoomEnabled = false
     }
     
     func configure(viewModel: MapInformationCellViewModel) {

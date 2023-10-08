@@ -33,7 +33,7 @@ final class AttributesInformationCellView: UIView, NibLoadable {
         valueLabel.text = viewModel.value
         explanationLabel.text = viewModel.explanation
         descriptionLabel.text = viewModel.description
-
+        outerContentContainerView.layer.cornerRadius = 12
         apply(layout: viewModel.layout)
     }
 

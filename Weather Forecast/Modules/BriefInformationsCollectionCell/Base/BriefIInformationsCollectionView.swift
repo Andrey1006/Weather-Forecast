@@ -13,16 +13,16 @@ class BriefIInformationsCollectionView: UIView, NibLoadable {
     
     private(set) var viewModel: BriefIInformationsCollectionViewModel!
         
-        
     override func awakeFromNib() {
         super.awakeFromNib()
-        collectionView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.layer.cornerRadius = 12
         collectionView.registerCell(class: BriefInformationCollectionCell.self)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .gray
+        collectionView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
     }
     
     func configure(viewModel: BriefIInformationsCollectionViewModel) {
@@ -60,7 +60,6 @@ extension BriefIInformationsCollectionView: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-//        return viewModel.layout.spacingBetweenItems
+        return 8
     }
 }

@@ -5,17 +5,17 @@
 //  Created by Андрей Сторожко on 19.09.2023.
 //
 
-import Foundation
+import UIKit
 
 struct BriefInformationCellViewModel: BaseCellViewModel {
     var layout: BriefInformationCellViewLayout = .init()
     var id: String
     var date: String
-    var image: String
+    var image: UIImage
     var temperature: String
     var size: CGSize = .zero
     
-    init(layout: BriefInformationCellViewLayout = .init(), id: String, date: String, image: String, temperature: String, width: CGFloat) {
+    init(layout: BriefInformationCellViewLayout = .init(), id: String, date: String, image: UIImage, temperature: String, width: CGFloat) {
         self.layout = layout
         self.id = id
         self.date = date
@@ -39,6 +39,11 @@ extension BriefInformationCellViewModel: Hashable {
 // MARK: - Equatable
 extension BriefInformationCellViewModel: Equatable {
     static func == (lhs: BriefInformationCellViewModel, rhs: BriefInformationCellViewModel) -> Bool {
-        return true
+        return KeyPathEqualizer(lhs: lhs, rhs: rhs)
+            .compare(by: \.id)
+            .compare(by: \.date)
+            .compare(by: \.image)
+            .compare(by: \.temperature)
+            .build()
     }
 }
