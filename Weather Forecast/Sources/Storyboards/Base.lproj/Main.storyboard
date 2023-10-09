@@ -2,8 +2,9 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -116,5 +117,42 @@
             </objects>
             <point key="canvasLocation" x="735" y="8"/>
         </scene>
+        <!--Weather Forecase Details View Controller-->
+        <scene sceneID="0VB-DV-kOf">
+            <objects>
+                <viewController storyboardIdentifier="WeatherForecaseDetailsViewController" id="hhi-9D-OAo" customClass="WeatherForecaseDetailsViewController" customModule="Weather_Forecast" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XVg-Oq-CTV">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qi0-y4-6TR" customClass="LineChartView" customModule="DGCharts">
+                                <rect key="frame" x="46.666666666666657" y="276" width="300" height="300"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="JBe-jC-D8N"/>
+                                    <constraint firstAttribute="width" constant="300" id="clt-RH-hDl"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="wug-ty-IZw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qi0-y4-6TR" firstAttribute="centerY" secondItem="XVg-Oq-CTV" secondAttribute="centerY" id="LeX-vN-uMU"/>
+                            <constraint firstItem="qi0-y4-6TR" firstAttribute="centerX" secondItem="XVg-Oq-CTV" secondAttribute="centerX" id="vpU-ai-5PR"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="qi0-y4-6TR" id="lUE-VA-P5T"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o5b-lh-RRg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1666" y="8"/>
+        </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
