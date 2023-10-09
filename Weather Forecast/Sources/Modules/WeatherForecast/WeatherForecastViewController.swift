@@ -3,7 +3,6 @@
 //  Weather Forecast
 //
 //  Created Андрей Сторожко on 28.09.2023.
-//  Copyright © 2023 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
 import UIKit
@@ -20,7 +19,6 @@ final class WeatherForecastViewController: UIViewController {
     @IBOutlet weak var contentContainerView: UIView!
     
     // MARK: - Properties
-    var moduleInput: WeatherForecastModuleInput!
 	var output: WeatherForecastViewOutput!
     var viewModel: WeatherForecastViewModel!
     private lazy var dataSource: DataSource.DiffableDataSource = makeDataSource()
@@ -30,6 +28,10 @@ final class WeatherForecastViewController: UIViewController {
         super.viewDidLoad()
         configure()
         output.viewDidLoad()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.output.didTapOnDayCell(id: "123")
+        }
     }
 }
 

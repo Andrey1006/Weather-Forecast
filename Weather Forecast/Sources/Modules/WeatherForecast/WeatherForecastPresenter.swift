@@ -3,7 +3,6 @@
 //  Weather Forecast
 //
 //  Created Андрей Сторожко on 28.09.2023.
-//  Copyright © 2023 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
 import Foundation
@@ -12,9 +11,10 @@ import Alamofire
 // MARK: - WeatherForecastModulePayload
 struct WeatherForecastModulePayload {
     /* use for transfer data to the module */
+    let weatherForecase: WeatherForecastDomainModel
 }
 
-final class WeatherForecastPresenter: WeatherForecastModuleInput {
+final class WeatherForecastPresenter {
     
     // MARK: - Properties
     weak private var view: WeatherForecastViewInput!
@@ -36,69 +36,61 @@ final class WeatherForecastPresenter: WeatherForecastModuleInput {
         self.interactor = interactor
         self.router = router
     }
-
-    // MARK: - WeatherForecastModuleInput
-    func launch(_ modulePayload: WeatherForecastModulePayload) {
-
-    }
 }
 
 // MARK: - WeatherForecastInteractorOutputProtocol
 extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
-    
-    
-    func resultWeather(weatherData: WeatherForecastDomainModel) {
-
-    var test: [WeatherForecastKindCellViewModel] = []
-        for item in weatherData.forecast {
-            test.append(
-                .detail(
-                    .init(
-                        layout: .init(roundStrategy: .single),
-                        id: item.date,
-                        date: item.date,
-                        image: "plus",
-                        minTemperature: String(item.minTempereture),
-                        maxTemperature: String(item.maxTempereture),
-                        width: viewModel.viewWidth
-                    )
-                )
-            )
-        }
-        
-        viewModel.dataSource.inject(
-            section: .init(
-                id: .brief,
-                items: [
-                    .brief(
+    func updateDataSource(weatherData: WeatherForecastDomainModel) {
+        var test: [WeatherForecastKindCellViewModel] = []
+            for item in weatherData.forecast {
+                test.append(
+                    .detail(
                         .init(
-                            id: "123das",
-                            items: createBriefInformationCellViewModel(weatherData: weatherData),
+                            layout: .init(roundStrategy: .single),
+                            id: item.date,
+                            date: item.date,
+                            image: "plus",
+                            minTemperature: String(item.minTempereture),
+                            maxTemperature: String(item.maxTempereture),
                             width: viewModel.viewWidth
                         )
                     )
-                ]
+                )
+            }
+        
+            viewModel.dataSource.inject(
+                section: .init(
+                    id: .brief,
+                    items: [
+                        .brief(
+                            .init(
+                                id: "123das",
+                                items: createBriefInformationCellViewModel(weatherData: weatherData),
+                                width: viewModel.viewWidth
+                            )
+                        )
+                    ]
+                )
             )
-        )
 
 
-        viewModel.dataSource.inject(
-            section: .init(
-                id: .detail,
-                items: test
+            viewModel.dataSource.inject(
+                section: .init(
+                    id: .detail,
+                    items: test
+                )
             )
-        )
-        
-        viewModel.dataSource.inject(
-            section: .init(
-                id: .map,
-                items: [.map(.init(id: "132", width: viewModel.viewWidth))])
-        )
-        
-        viewModel.dataSource.inject(
-            section: .init(
-                id: .attributes,
-                items: [
+            
+            viewModel.dataSource.inject(
+                section: .init(
+                    id: .map,
+                    items: [.map(.init(id: "132", width: viewModel.viewWidth))])
+            )
+            
+            viewModel.dataSource.inject(
+                section: .init(
+                    id: .attributes,
+                    items: [
 //                    .attributes(
 //                        .init(
 //                            id: "1",
@@ -140,12 +132,20 @@ extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
         )
         view.reloadDataSource()
     }
+    
+    func presentWeatherForecaseDetailsScreen(weatherData: WeatherForecastDomainModel, day: Int) {
+        router.presentWeatherForecaseDetailsScreen(weatherData: weatherData, day: day)
+    }
 }
 
 // MARK: - WeatherForecastPresenterProtocol
 extension WeatherForecastPresenter: WeatherForecastViewOutput {
     func viewDidLoad() {
         interactor.viewDidLoad()
+    }
+    
+    func didTapOnDayCell(id: String) {
+        interactor.didTapOnDayCell(id: id)
     }
 }
 

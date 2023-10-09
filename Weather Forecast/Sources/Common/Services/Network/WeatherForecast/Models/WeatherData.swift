@@ -1,24 +1,24 @@
 //
-//  WeatherData.swift
-//  Weather Forecast
+//  WeatherDataRemoteModel.swift
+//  Weather ForecastRemoteModel
 //
 //  Created by Андрей Сторожко on 20.09.2023.
 //
 
 import Foundation
 
-struct WeatherData: Codable {
-    var location: Location
-    var current: Current
-    var forecast: Forecast
+struct WeatherForecastApiResponse: Decodable {
+    var location: LocationRemoteModel
+    var current: CurrentWeatherForecastRemoteModel
+    var forecast: ForecastRemoteModel
 }
 
-struct Location: Codable {
+struct LocationRemoteModel: Decodable {
     var name: String
     var localtime: String
 }
 
-struct Current: Codable {
+struct CurrentWeatherForecastRemoteModel: Decodable {
     var temperature: Double
     var uVIndex: Double
     var feelslike: Double
@@ -26,7 +26,7 @@ struct Current: Codable {
     var pressureMb: Double
     var visibilityKm: Double
     var windKph: Double
-    var condition: Condition
+    var condition: WeatherConditionRemoteModel
     
     private enum CodingKeys: String, CodingKey {
         case temperature = "temp_c"
@@ -40,21 +40,21 @@ struct Current: Codable {
     }
 }
 
-struct Forecast: Codable {
-    var forecastday: [ForecastDay]
+struct ForecastRemoteModel: Decodable {
+    var forecastday: [FullDayWeatherForecastRemoteModel]
 }
 
-struct ForecastDay: Codable {
+struct FullDayWeatherForecastRemoteModel: Decodable {
     var date: String
-    var day: Day
-    var astro: Astro
-    var hour: [Hour]
+    var day: DayWeatherForecastRemoteModel
+    var astro: AstroRemoteModel
+    var hour: [HourWeatherForecaseRemoteModel]
 }
 
-struct Day: Codable {
+struct DayWeatherForecastRemoteModel: Decodable {
     var maxTempereture: Double
     var minTempereture: Double
-    var condition: Condition
+    var condition: WeatherConditionRemoteModel
     var uVIndex: Double
     
     private enum CodingKeys: String, CodingKey {
@@ -65,22 +65,22 @@ struct Day: Codable {
     }
 }
 
-struct Condition: Codable {
+struct WeatherConditionRemoteModel: Decodable {
     var text: String
     var icon: String
 }
 
-struct Astro: Codable {
+struct AstroRemoteModel: Decodable {
     var sunrise: String
     var sunset: String
     var moonrise: String
     var moonset: String
 }
 
-struct Hour: Codable {
+struct HourWeatherForecaseRemoteModel: Decodable {
     var time: String
     var temperature: Double
-    var condition: Condition
+    var condition: WeatherConditionRemoteModel
     var feelslike: Double
     var windKph: Double
     var uVIndex: Double

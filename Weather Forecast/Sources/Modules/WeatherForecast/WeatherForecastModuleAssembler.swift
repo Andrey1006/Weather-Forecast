@@ -3,7 +3,6 @@
 //  Weather Forecast
 //
 //  Created Андрей Сторожко on 28.09.2023.
-//  Copyright © 2023 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
 import UIKit
@@ -25,7 +24,7 @@ struct WeatherForecastModuleAssembler {
     func createModule(with viewController: WeatherForecastViewController) {
         let viewModel: WeatherForecastViewModel = .init()
         let interactor: WeatherForecastInteractor = .init()
-        let router: WeatherForecastRouter = .init()
+        let router: WeatherForecastRouter = .init(viewController: viewController)
         let presenter: WeatherForecastPresenter = .init(
             view: viewController,
             viewModel: viewModel,
@@ -35,8 +34,6 @@ struct WeatherForecastModuleAssembler {
     
         viewController.viewModel = viewModel
         viewController.output = presenter
-        viewController.moduleInput = presenter
         interactor.output = presenter
-        router.viewController = viewController
     }
 }
