@@ -8,7 +8,7 @@
 import UIKit
 
 struct DetailInformationCellViewLayout {
-    let outerContentInsets: UIEdgeInsets = .init(top: 0, left: 24, bottom: 0, right: 24)
+    let outerContentInsets: UIEdgeInsets
     let innerContentInsets: UIEdgeInsets
     let titleFont: UIFont = .systemFont(ofSize: 20)
     let minTemperatureFont: UIFont = .systemFont(ofSize: 20)
@@ -22,12 +22,19 @@ struct DetailInformationCellViewLayout {
     
     init(roundStrategy: RoundedSectionItemKind) {
         let innerBaseContentInset: UIEdgeInsets = .init(top: 16, left: 16, bottom: 16, right: 16)
+        let outerContentInset: UIEdgeInsets = .init(top: 0, left: 24, bottom: 0, right: 24)
         let baseCornerRadius: CGFloat = 12
         
         switch roundStrategy {
         case .first:
             cornerRadius = baseCornerRadius
             maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            outerContentInsets = .init(
+                top: 12,
+                left: 24,
+                bottom: 0,
+                right: 24
+            )
             innerContentInsets = .init(
                 top: innerBaseContentInset.top,
                 left: innerBaseContentInset.left,
@@ -38,6 +45,7 @@ struct DetailInformationCellViewLayout {
         case .middle:
             cornerRadius = 0
             maskedCorners = []
+            outerContentInsets = outerContentInset
             innerContentInsets = .init(
                 top: innerBaseContentInset.top / 2,
                 left: innerBaseContentInset.left,
@@ -47,6 +55,7 @@ struct DetailInformationCellViewLayout {
             viewIsHiden = false
         case .last:
             cornerRadius = baseCornerRadius
+            outerContentInsets = outerContentInset
             maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
             innerContentInsets = .init(
                 top: innerBaseContentInset.top / 2,
@@ -63,13 +72,21 @@ struct DetailInformationCellViewLayout {
                 .layerMinXMinYCorner,
                 .layerMaxXMinYCorner
             ]
+    
+            outerContentInsets = .init(
+                top: 12,
+                left: 24,
+                bottom: 0,
+                right: 24
+            )
+            
             innerContentInsets = .init(
                 top: innerBaseContentInset.top,
                 left: innerBaseContentInset.left,
                 bottom: innerBaseContentInset.bottom,
                 right: innerBaseContentInset.right
             )
-            viewIsHiden = false
+            viewIsHiden = true
         }
     }
 }

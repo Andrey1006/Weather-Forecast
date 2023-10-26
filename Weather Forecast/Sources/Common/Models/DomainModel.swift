@@ -27,6 +27,7 @@ struct DayWeatherForecast {
     var sunset: String
     var moonrise: String
     var moonset: String
+    var icon: String
 
     var hourForecast: [HourWeatherForecast]
 }
@@ -39,6 +40,7 @@ struct HourWeatherForecast {
     var pressureMb: Int
     var visibilityKm: Int
     var windKph: Int
+    var windDirection: String
     var time: String
     var text: String
     var icon: String

@@ -43,6 +43,7 @@ final class WeatherForecastNetworkService {
                     sunset: forecastDay.astro.sunset,
                     moonrise: forecastDay.astro.moonrise,
                     moonset: forecastDay.astro.moonset,
+                    icon: forecastDay.day.condition.icon,
                     hourForecast: forecastDay.hour.map { hour in
                         return .init(
                             temperature: Int(hour.temperature),
@@ -52,6 +53,7 @@ final class WeatherForecastNetworkService {
                             pressureMb: Int(hour.pressureMb),
                             visibilityKm: Int(hour.visibilityKm),
                             windKph: Int(hour.windKph),
+                            windDirection: hour.windDirection,
                             time: hour.time,
                             text: hour.condition.text,
                             icon: hour.condition.icon
@@ -67,6 +69,7 @@ final class WeatherForecastNetworkService {
                 pressureMb: Int(weatherData.current.pressureMb),
                 visibilityKm: Int(weatherData.current.visibilityKm),
                 windKph: Int(weatherData.current.windKph),
+                windDirection: weatherData.current.windDirection,
                 time: weatherData.location.localtime,
                 text: weatherData.current.condition.text,
                 icon: weatherData.current.condition.icon

@@ -16,7 +16,15 @@ struct DetailInformationCellViewModel: BaseCellViewModel {
     var maxTemperature: String
     var size: CGSize = .zero
     
-    init(layout: DetailInformationCellViewLayout, id: String, date: String, image: String, minTemperature: String, maxTemperature: String, width: CGFloat) {
+    init(
+        layout: DetailInformationCellViewLayout,
+        id: String,
+        date: String,
+        image: String,
+        minTemperature: String,
+        maxTemperature: String,
+        width: CGFloat
+    ) {
         self.layout = layout
         self.id = id
         self.date = date

@@ -23,5 +23,24 @@ extension WeatherForecaseDetailsInteractor: WeatherForecaseDetailsInteractorInpu
     func viewDidLoad() {
         output.updateDataSource(weatherData: weatherForecast)
     }
+    
+    //var selectedDay: String = ""
+//        var days: [CalendarCellViewModel] = []
+    //
+    //func updateSelectedDay(id: String) {
+//        guard let index = days.firstIndex(where: { $0.id == id }) else {
+//            return
+//        }
+    //
+    //    view.reloadDays(days: days, index: index)
+    
+    func didSelectDay(id: String) {
+        guard let index = weatherForecast.forecast.firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        
+        print("interactor \(id)")
+        output.reloadDays(days: weatherForecast, index: index)
+    }
 
 }

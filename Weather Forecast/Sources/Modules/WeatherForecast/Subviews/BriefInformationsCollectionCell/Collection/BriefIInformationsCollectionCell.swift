@@ -9,6 +9,9 @@ import UIKit
 
 class BriefIInformationsCollectionCell: UICollectionViewCell, Reusable {
     let source: BriefIInformationsCollectionView = .loadFromNib()
+    
+    @Proxy(\BriefIInformationsCollectionCell.source.onTap)
+    var onTap: ((BriefIInformationsCollectionViewModel) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

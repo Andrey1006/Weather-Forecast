@@ -26,6 +26,7 @@ struct CurrentWeatherForecastRemoteModel: Decodable {
     var pressureMb: Double
     var visibilityKm: Double
     var windKph: Double
+    var windDirection: String
     var condition: WeatherConditionRemoteModel
     
     private enum CodingKeys: String, CodingKey {
@@ -36,6 +37,7 @@ struct CurrentWeatherForecastRemoteModel: Decodable {
         case pressureMb = "pressure_mb"
         case visibilityKm = "vis_km"
         case windKph = "wind_kph"
+        case windDirection = "wind_dir"
         case condition
     }
 }
@@ -83,6 +85,7 @@ struct HourWeatherForecaseRemoteModel: Decodable {
     var condition: WeatherConditionRemoteModel
     var feelslike: Double
     var windKph: Double
+    var windDirection: String
     var uVIndex: Double
     var precipitationMm: Double
     var pressureMb: Double
@@ -94,6 +97,7 @@ struct HourWeatherForecaseRemoteModel: Decodable {
         case condition
         case feelslike = "feelslike_c"
         case windKph = "wind_kph"
+        case windDirection = "wind_dir"
         case uVIndex = "uv"
         case precipitationMm = "precip_mm"
         case pressureMb = "pressure_mb"
