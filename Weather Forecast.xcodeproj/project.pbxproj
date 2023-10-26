@@ -42,6 +42,9 @@
 		36A341122ABA399C00B4EFDE /* AttributesInformationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A341112ABA399C00B4EFDE /* AttributesInformationCellViewModel.swift */; };
 		36A341142ABA39A600B4EFDE /* AttributesInformationCellViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A341132ABA39A600B4EFDE /* AttributesInformationCellViewLayout.swift */; };
 		36A341162ABA39B000B4EFDE /* AttributesInformationCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A341152ABA39B000B4EFDE /* AttributesInformationCollectionCell.swift */; };
+		36C7D2412AEACD7A003AAB0F /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 36C7D2402AEACD7A003AAB0F /* Kingfisher */; };
+		36C7D2442AEACDBA003AAB0F /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 36C7D2432AEACDBA003AAB0F /* DGCharts */; };
+		36C7D2462AEACDBA003AAB0F /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 36C7D2452AEACDBA003AAB0F /* DGChartsDynamic */; };
 		36D5DCD12ABB0AEA003CEF91 /* WeatherForecastNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5DCD02ABB0AEA003CEF91 /* WeatherForecastNetworkService.swift */; };
 		36D5DCD62ABB5DC2003CEF91 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D5DCD52ABB5DC2003CEF91 /* WeatherData.swift */; };
 		36E5C8D72AB9AE4100FC0DE7 /* BriefIInformationsCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 36E5C8D62AB9AE4100FC0DE7 /* BriefIInformationsCollectionView.xib */; };
@@ -172,6 +175,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36C7D2462AEACDBA003AAB0F /* DGChartsDynamic in Frameworks */,
+				36C7D2412AEACD7A003AAB0F /* Kingfisher in Frameworks */,
+				36C7D2442AEACDBA003AAB0F /* DGCharts in Frameworks */,
 				36131D972AEA7F8E00DD2BA4 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -625,6 +631,9 @@
 			name = "Weather Forecast";
 			packageProductDependencies = (
 				36131D962AEA7F8E00DD2BA4 /* Alamofire */,
+				36C7D2402AEACD7A003AAB0F /* Kingfisher */,
+				36C7D2432AEACDBA003AAB0F /* DGCharts */,
+				36C7D2452AEACDBA003AAB0F /* DGChartsDynamic */,
 			);
 			productName = "Weather Forecast";
 			productReference = 36F0B5632AB892BE005EFC75 /* Weather Forecast.app */;
@@ -656,6 +665,8 @@
 			mainGroup = 36F0B55A2AB892BE005EFC75;
 			packageReferences = (
 				36131D952AEA7F8E00DD2BA4 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				36C7D23F2AEACD7A003AAB0F /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				36C7D2422AEACDBA003AAB0F /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = 36F0B5642AB892BE005EFC75 /* Products */;
 			projectDirPath = "";
@@ -986,6 +997,22 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		36C7D23F2AEACD7A003AAB0F /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.9.1;
+			};
+		};
+		36C7D2422AEACDBA003AAB0F /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -993,6 +1020,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36131D952AEA7F8E00DD2BA4 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		36C7D2402AEACD7A003AAB0F /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C7D23F2AEACD7A003AAB0F /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		36C7D2432AEACDBA003AAB0F /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C7D2422AEACDBA003AAB0F /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		36C7D2452AEACDBA003AAB0F /* DGChartsDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C7D2422AEACDBA003AAB0F /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGChartsDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
