@@ -16,41 +16,51 @@ final class WeatherForecastViewController: UIViewController {
     @IBOutlet weak var weatherLabel: UILabel!
     @IBOutlet weak var maxMinTemperatureLabel: UILabel!
     
-    @IBOutlet weak var contentContainerView: UIView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
     
     // MARK: - Properties
 	var output: WeatherForecastViewOutput!
     var viewModel: WeatherForecastViewModel!
     private lazy var dataSource: DataSource.DiffableDataSource = makeDataSource()
     
+    
     // MARK: - Life cycle
 	override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         output.viewDidLoad()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.output.didTapOnDayCell(id: "123")
-        }
     }
 }
 
 // MARK: - Private methods
 private extension WeatherForecastViewController {
     func configure() {
-        view.backgroundColor = .blue
         viewModel.viewWidth = view.bounds.width
         collectionView.delegate = self
+        collectionView.showsVerticalScrollIndicator = false
+        
+        if traitCollection.userInterfaceStyle == .dark {
+            backgroundImageView.image = UIImage(named: "noch")
+        } else {
+            backgroundImageView.image = UIImage(named: "solnce")
+        }
     }
     
     func makeDataSource() -> DataSource.DiffableDataSource {
+        collectionView.registerCell(class: TitleInformationCollectionCell.self)
         collectionView.registerCell(class: AttributesInformationCollectionCell.self)
         collectionView.registerCell(class: DetailInformationCollectionCell.self)
         collectionView.registerCell(class: BriefIInformationsCollectionCell.self)
         collectionView.registerCell(class: MapInformationCollectionCell.self)
+        collectionView.registerCell(class: DirectionWindCollectionCell.self)
         
         let result: DataSource.DiffableDataSource = .init(for: collectionView) { collectionView, indexPath, cellViewModel in
             switch cellViewModel {
+            case .title:
+                return collectionView.dequeueReusableCell(
+                    type: TitleInformationCollectionCell.self,
+                    for: indexPath
+                )
             case .brief:
                 return collectionView.dequeueReusableCell(
                     type: BriefIInformationsCollectionCell.self,
@@ -71,8 +81,14 @@ private extension WeatherForecastViewController {
                     type: AttributesInformationCollectionCell.self,
                     for: indexPath
                 )
+            case .directionWind:
+                return collectionView.dequeueReusableCell(
+                    type: DirectionWindCollectionCell.self,
+                    for: indexPath
+                )
             }
         }
+        
         return result
     }
 }
@@ -92,37 +108,30 @@ extension WeatherForecastViewController: UICollectionViewDelegate {
         }
         
         switch itemViewModel {
+        case .title(let viewModel):
+            cell.configure(as: TitleInformationCollectionCell.self, with: viewModel)
         case .brief(let viewModel):
-            cell.configure(as: BriefIInformationsCollectionCell.self, with: viewModel)
+            cell.configure(as: BriefIInformationsCollectionCell.self, with: viewModel) { cell in
+                cell.onTap = { [weak self] viewModel in
+                    self?.output.didTapOnDayCell(id: viewModel.id)
+                    print(viewModel.id)
+                }
+            }
         case .detail(let viewModel):
-            cell.configure(as: DetailInformationCollectionCell.self, with: viewModel)
+            cell.configure(as: DetailInformationCollectionCell.self, with: viewModel) { cell in
+                cell.onTap = { [weak self] viewModel in
+                    self?.output.didTapOnDayCell(id: viewModel.id)
+                    print(viewModel.id)
+                }
+            }
         case .map(let viewModel):
             cell.configure(as: MapInformationCollectionCell.self, with: viewModel)
         case .attributes(let viewModel):
             cell.configure(as: AttributesInformationCollectionCell.self, with: viewModel)
+        case .directionWind(let viewModel):
+            cell.configure(as: DirectionWindCollectionCell.self, with: viewModel)
         }
-    }
-    
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        let offsetY = scrollView.contentOffset.y
-//        let threshold: CGFloat = 100.0
-//
-//        if offsetY > threshold && !isViewHidden {
-//            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
-//                self.yourViewTopConstraint.constant = -self.contentContainerView.frame.size.height
-//                self.view.layoutIfNeeded()
-//            }, completion: nil)
-//            isViewHidden = true
-//        }
-//
-//        if offsetY <= threshold && isViewHidden {
-//            UIView.animate(withDuration: 0.5, delay: 0.0, options: [.curveEaseOut], animations: {
-//                self.yourViewTopConstraint.constant = self.initialViewY
-//                self.view.layoutIfNeeded()
-//            }, completion: nil)
-//            isViewHidden = false
-//        }
-//    }
+    }    
 }
 
 

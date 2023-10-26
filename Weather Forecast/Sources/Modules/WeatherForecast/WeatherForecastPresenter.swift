@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import UIKit
 
 // MARK: - WeatherForecastModulePayload
 struct WeatherForecastModulePayload {
@@ -41,22 +42,63 @@ final class WeatherForecastPresenter {
 // MARK: - WeatherForecastInteractorOutputProtocol
 extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
     func updateDataSource(weatherData: WeatherForecastDomainModel) {
-        var test: [WeatherForecastKindCellViewModel] = []
-            for item in weatherData.forecast {
-                test.append(
-                    .detail(
+        var weatherDetails: [WeatherForecastKindCellViewModel] = []
+        
+        func roundStrategy() -> DetailInformationCellViewLayout {
+            switch weatherDetails.count {
+            case 0:
+                return .init(roundStrategy: .first)
+            case 1:
+                return .init(roundStrategy: .middle)
+            default:
+                return .init(roundStrategy: .last)
+            }
+        }
+                
+        for item in weatherData.forecast {
+            
+            let dateFormatter: DateFormatter = .init()
+            dateFormatter.dateFormat = "yy-MM-dd"
+            
+            let date = dateFormatter.date(from: item.date)
+            
+            let calendar = Calendar.current
+            let dayOfWeek = calendar.component(.weekday, from: date ?? .now)
+            let weekdayNames = dateFormatter.shortWeekdaySymbols
+            let dayOfWeekName = weekdayNames?[dayOfWeek - 1] ?? "error"
+    
+            weatherDetails.append(
+                .detail(
+                    .init(
+                        layout: roundStrategy(),
+                        id: item.date,
+                        date: dayOfWeekName,
+                        image: "https:\(item.icon)",
+                        minTemperature: "\(String(item.minTempereture))°",
+                        maxTemperature: "\(String(item.maxTempereture))°",
+                        width: viewModel.viewWidth
+                    )
+                )
+            )
+        }
+        
+        viewModel.dataSource.inject(
+            section: .init(
+                id: .title,
+                items: [
+                    .title(
                         .init(
-                            layout: .init(roundStrategy: .single),
-                            id: item.date,
-                            date: item.date,
-                            image: "plus",
-                            minTemperature: String(item.minTempereture),
-                            maxTemperature: String(item.maxTempereture),
+                            id: "6543",
+                            title: "Киев",
+                            value: String(weatherData.currentHourWeather.temperature),
+                            weatherPhenomenon: weatherData.currentHourWeather.text,
+                            maxAndMinTemperature: "Макс.:\(String(weatherData.forecast[0].maxTempereture))°,мин.:\(String(weatherData.forecast[0].minTempereture))°",
                             width: viewModel.viewWidth
                         )
                     )
-                )
-            }
+                ]
+            )
+        )
         
             viewModel.dataSource.inject(
                 section: .init(
@@ -77,59 +119,81 @@ extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
             viewModel.dataSource.inject(
                 section: .init(
                     id: .detail,
-                    items: test
+                    items: weatherDetails
                 )
             )
             
             viewModel.dataSource.inject(
                 section: .init(
                     id: .map,
-                    items: [.map(.init(id: "132", width: viewModel.viewWidth))])
+                    items: [
+                        .map(
+                            .init(
+                                id: "132",
+                                currentLocationTemperature: String(weatherData.currentHourWeather.temperature),
+                                width: viewModel.viewWidth
+                            )
+                        )
+                    ]
+                )
             )
-            
+        
             viewModel.dataSource.inject(
                 section: .init(
                     id: .attributes,
                     items: [
-//                    .attributes(
-//                        .init(
-//                            id: "1",
-//                            title: weatherData.forecast[0].currentHourWeather?.time ?? "",
-//                            value: String(weatherData.forecast[0].currentHourWeather?.uVIndex ?? 0),
-//                            width: 180
-//                        )
-//                    ),
-//                    .attributes(
-//                        .init(
-//                            id: "2",
-//                            title: "Заход солнца",
-//                            value: String(weatherData.forecast[0].sunset),
-//                            description: String(weatherData.forecast[0].sunrise),
-//                            width: 180
-//                        )
-//                    )
                     .attributes(
                         .init(
                             id: "3",
-                            title: "Чувствуется как",
-                            value: String(weatherData.currentHourWeather.feelslike),
-                            description: "Примерно как фактическая температура",
-                            width: 180
+                            title: "Ощущается как",
+                            value: "\(String(weatherData.currentHourWeather.feelslike))°",
+                            width: viewModel.viewWidth / 2
                         )
                     ),
                     .attributes(
                         .init(
                             id: "4",
-                            title: "Чувствуется как",
-                            value: String(weatherData.currentHourWeather.feelslike),
-                            description: "Примерно как фактическая температура",
-                            width: 180
+                            title: "Оcaдки",
+                            value: "\(String(weatherData.currentHourWeather.precipitationMm)) ММ",
+                            width: viewModel.viewWidth / 2
                         )
-                    )
-
+                    ),
+                    .attributes(
+                        .init(
+                            id: "6",
+                            title: "Ощущается как",
+                            value: "\(String(weatherData.currentHourWeather.precipitationMm))%",
+                            width: viewModel.viewWidth / 2
+                        )
+                    ),
+                    .attributes(
+                        .init(
+                            id: "5",
+                            title: "Видимость",
+                            value: "\(String(weatherData.currentHourWeather.visibilityKm)) КМ",
+                            width: viewModel.viewWidth / 2
+                        )
+                    ),
                 ]
             )
         )
+        viewModel.dataSource.inject(
+            section: .init(
+                id: .directionWind ,
+                items: [
+                    .directionWind(
+                        .init(
+                            id: "1",
+                            title: "💨 Ветер",
+                            direction: weatherData.currentHourWeather.windDirection,
+                            value: "\(String(weatherData.currentHourWeather.windKph))км/ч",
+                            width: viewModel.viewWidth / 2
+                        )
+                    )
+                ]
+            )
+        )
+        
         view.reloadDataSource()
     }
     
@@ -154,18 +218,24 @@ private extension WeatherForecastPresenter {
         
         var result: [BriefInformationCellViewModel] = []
         
-        let date: Date = .init()
+        let date: Date = .now + 7200
         
         for dayForecast in weatherData.forecast {
             for hourForecast in dayForecast.hourForecast {
                 if date.description < hourForecast.time && result.count < 24 {
+                    
+                    let dateFormatter: DateFormatter = .init()
+                    dateFormatter.dateFormat = "yy-MM-dd HH:mm"
+                    let test = dateFormatter.date(from: hourForecast.time)
+                    dateFormatter.dateFormat = "HH"
+                    let formattedHour = dateFormatter.string(from: test ?? .now)
+                    
                     result.append(
                         .init(
                             id: hourForecast.time,
-                            date: hourForecast.time,
-                            image: .init(systemName: "square.and.arrow.up")!,
-                            temperature: String(hourForecast.temperature),
-                            width: 200
+                            date: formattedHour,
+                            image: "https:\(hourForecast.icon)",
+                            temperature: "\(String(hourForecast.temperature))°"
                         )
                     )
                 }
@@ -176,538 +246,3 @@ private extension WeatherForecastPresenter {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//func createBriefInformationCellViewModel(
-//    for id: DetailInformationKind,
-//    kind: [String],
-//    width: CGFloat
-//) -> BriefIInformationsCollectionViewModel {
-//
-//    return .init(id: id.rawValue, items: [], width: width)
-//}
-//}
-//
-//func createDetailInformationCellViewModel(for id: DetailInformationKind) {
-//
-//}
-
-
-//        interactor.fetchData { [weak self] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success(let success):
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .brief,
-//                        items: [.brief(
-//                            .init(
-//                                id: "11",
-//                                items: [
-//                                    .init(id: "1", date: "Сейчас", image: .init(systemName: "square.and.arrow.up")!, temperature: String(success.current.temp_c), width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50)
-//                                ],
-//                                width: viewModel.viewWidth
-//                            )
-//                        )]
-//                    )
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .detail,
-//                        items: [
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .first),
-//                                    id: "1",
-//                                    date: success.forecast.forecastday[0].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[0].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[0].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            ),
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .middle),
-//                                    id: "2",
-//                                    date: success.forecast.forecastday[1].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[1].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[1].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            ),
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .last),
-//                                    id: "3",
-//                                    date: success.forecast.forecastday[2].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[2].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[2].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            )
-//                        ]
-//                    )
-//                )
-//            case .failure(let failure):
-//                print(failure)
-//            }
-//            view.reloadDataSource()
-//        }
-//                let insets: CGFloat = 24
-//                let countOfItemsInRow: CGFloat = 2
-//                let cellWidth: CGFloat = floor(
-//                    (viewModel.viewWidth - (insets * 2) - (insets * (countOfItemsInRow - 1))) / countOfItemsInRow
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .brief,
-//                        items: [.brief(
-//                            .init(
-//                                id: "1",
-//                                items: [
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50)
-//                                ],
-//                                width: viewModel.viewWidth
-//                            )
-//                        )]
-//                    )
-//                )
-//
-//                    viewModel.dataSource.inject(
-//                        section: .init(
-//                            id: .detail,
-//                            items: [
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .first),
-//                                        id: "1",
-//                                        date: "1",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "1",
-//                                        maxTemperature: "2",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "2",
-//                                        date: "2",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "2",
-//                                        maxTemperature: "2",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "3",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "14",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "13",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "12",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "11",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .last),
-//                                        id: "4",
-//                                        date: "4",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "4",
-//                                        maxTemperature: "4",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                )
-//                            ]
-//                        )
-//                    )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .map,
-//                        items: [.map(.init(id: "3", width: viewModel.viewWidth))]
-//                    )
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .attributes,
-//                        items: [
-//                            .attributes(
-//                                .init(
-//                                    id: "4",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "5",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "6",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "7",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            )
-//                        ],
-//                        insets: .init(top: insets, left: insets, bottom: 0, right: insets),
-//                        interitemSpacing: insets,
-//                        lineSpacing: insets
-//                    )
-//                )
-//
-//        view.reloadDataSource()
-//        interactor.fetchData { [weak self] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success(let success):
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .brief,
-//                        items: [.brief(
-//                            .init(
-//                                id: "11",
-//                                items: [
-//                                    .init(id: "1", date: "Сейчас", image: .init(systemName: "square.and.arrow.up")!, temperature: String(success.current.temp_c), width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50)
-//                                ],
-//                                width: viewModel.viewWidth
-//                            )
-//                        )]
-//                    )
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .detail,
-//                        items: [
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .first),
-//                                    id: "1",
-//                                    date: success.forecast.forecastday[0].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[0].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[0].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            ),
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .middle),
-//                                    id: "2",
-//                                    date: success.forecast.forecastday[1].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[1].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[1].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            ),
-//                            .detail(
-//                                .init(
-//                                    layout: .init(roundStrategy: .last),
-//                                    id: "3",
-//                                    date: success.forecast.forecastday[2].date,
-//                                    image: .init(systemName: "square.and.arrow.up")!,
-//                                    minTemperature: String(success.forecast.forecastday[2].day.mintemp_c),
-//                                    maxTemperature: String(success.forecast.forecastday[2].day.maxtemp_c),
-//                                    width: viewModel.viewWidth
-//                                )
-//                            )
-//                        ]
-//                    )
-//                )
-//            case .failure(let failure):
-//                print(failure)
-//            }
-//            view.reloadDataSource()
-//        }
-//                let insets: CGFloat = 24
-//                let countOfItemsInRow: CGFloat = 2
-//                let cellWidth: CGFloat = floor(
-//                    (viewModel.viewWidth - (insets * 2) - (insets * (countOfItemsInRow - 1))) / countOfItemsInRow
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .brief,
-//                        items: [.brief(
-//                            .init(
-//                                id: "1",
-//                                items: [
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50),
-//                                    .init(id: "1", date: "1", image: .init(systemName: "square.and.arrow.up")!, temperature: "1", width: 50)
-//                                ],
-//                                width: viewModel.viewWidth
-//                            )
-//                        )]
-//                    )
-//                )
-//
-//                    viewModel.dataSource.inject(
-//                        section: .init(
-//                            id: .detail,
-//                            items: [
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .first),
-//                                        id: "1",
-//                                        date: "1",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "1",
-//                                        maxTemperature: "2",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "2",
-//                                        date: "2",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "2",
-//                                        maxTemperature: "2",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "3",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "14",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "13",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "12",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .middle),
-//                                        id: "11",
-//                                        date: "3",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "3",
-//                                        maxTemperature: "3",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                ),
-//                                .detail(
-//                                    .init(
-//                                        layout: .init(roundStrategy: .last),
-//                                        id: "4",
-//                                        date: "4",
-//                                        image: .init(systemName: "square.and.arrow.up")!,
-//                                        minTemperature: "4",
-//                                        maxTemperature: "4",
-//                                        width: viewModel.viewWidth
-//                                    )
-//                                )
-//                            ]
-//                        )
-//                    )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .map,
-//                        items: [.map(.init(id: "3", width: viewModel.viewWidth))]
-//                    )
-//                )
-//
-//                viewModel.dataSource.inject(
-//                    section: .init(
-//                        id: .attributes,
-//                        items: [
-//                            .attributes(
-//                                .init(
-//                                    id: "4",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "5",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "6",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            ),
-//                            .attributes(
-//                                .init(
-//                                    id: "7",
-//                                    title: "Ощущается как",
-//                                    value: "15°",
-//                                    description: "Из-за ветра кажется что прохладнее",
-//                                    width: cellWidth
-//                                )
-//                            )
-//                        ],
-//                        insets: .init(top: insets, left: insets, bottom: 0, right: insets),
-//                        interitemSpacing: insets,
-//                        lineSpacing: insets
-//                    )
-//                )
-//
-//        view.reloadDataSource()

@@ -9,12 +9,13 @@ import UIKit
 
 final class AttributesInformationCellView: UIView, NibLoadable {
     @IBOutlet weak var outerContentContainerView: UIView!
+    
+    @IBOutlet weak var blurView: UIVisualEffectView!
+    
     @IBOutlet weak var innerContentContainerView: UIView!
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var valueLabel: UILabel!
-    @IBOutlet weak var explanationLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
     
     private(set) var viewModel: AttributesInformationCellViewModel!
     
@@ -24,15 +25,20 @@ final class AttributesInformationCellView: UIView, NibLoadable {
     }
     
     func initialSetup() {
+        let blurEffect = UIBlurEffect(style: .light)
+        blurView.effect = blurEffect
+        blurView.alpha = 0.7
+        blurView.layer.cornerRadius = 12
+        blurView.layer.masksToBounds = true
         
+        outerContentContainerView.backgroundColor = .clear
+        outerContentContainerView.backgroundColor = outerContentContainerView.backgroundColor?.withAlphaComponent(0.2)
     }
     
     func configure(viewModel: AttributesInformationCellViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
         valueLabel.text = viewModel.value
-        explanationLabel.text = viewModel.explanation
-        descriptionLabel.text = viewModel.description
         outerContentContainerView.layer.cornerRadius = 12
         apply(layout: viewModel.layout)
     }
@@ -40,7 +46,5 @@ final class AttributesInformationCellView: UIView, NibLoadable {
     private func apply(layout: AttributesInformationCellViewLayout) {
         titleLabel.font = layout.titleFont
         valueLabel.font = layout.valueFont
-        explanationLabel.font = layout.explanationFont
-        descriptionLabel.font = layout.descriptionFont
     }
 }
