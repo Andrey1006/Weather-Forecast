@@ -11,21 +11,40 @@ struct BriefInformationCellViewModel: BaseCellViewModel {
     var layout: BriefInformationCellViewLayout = .init()
     var id: String
     var date: String
-    var image: UIImage
+    var image: String
     var temperature: String
     var size: CGSize = .zero
     
-    init(layout: BriefInformationCellViewLayout = .init(), id: String, date: String, image: UIImage, temperature: String, width: CGFloat) {
+    init(
+        layout: BriefInformationCellViewLayout = .init(),
+        id: String,
+        date: String,
+        image: String,
+        temperature: String
+    ) {
         self.layout = layout
         self.id = id
         self.date = date
         self.image = image
         self.temperature = temperature
-        calculateSize(width: width)
+        calculateSize()
     }
     
-    private mutating func calculateSize(width: CGFloat) {
-        size = .init(width: width, height: layout.contentInsets.vertical + layout.imageHeight + layout.spacingBetweenImageAndValue + layout.spacingBetweenTitleAndImage + layout.valueFont.lineHeight + layout.titleFont.lineHeight)
+    private mutating func calculateSize() {
+        size = .init(
+            width: [
+                layout.contentInsets.horizontal,
+                layout.imageHeight
+            ].reduce(0, +),
+            height: [
+                layout.contentInsets.vertical,
+                layout.imageHeight,
+                layout.spacingBetweenImageAndValue,
+                layout.spacingBetweenTitleAndImage,
+                layout.valueFont.lineHeight,
+                layout.titleFont.lineHeight
+            ].reduce(0, +)
+        )
     }
 }
 

@@ -12,22 +12,33 @@ struct AttributesInformationCellViewModel: BaseCellViewModel {
     var id: String
     var title: String
     var value: String
-    var explanation: String
-    var description: String
     var size: CGSize = .zero
     
-    init(layout: AttributesInformationCellViewLayout = .init(), id: String = "", title: String = "", value: String = "", explanation: String = "", description: String = "", width: CGFloat) {
+    init(
+        layout: AttributesInformationCellViewLayout = .init(),
+        id: String,
+        title: String,
+        value: String,
+        width: CGFloat
+    ) {
         self.layout = layout
         self.id = id
         self.title = title
         self.value = value
-        self.explanation = explanation
-        self.description = description
         calculateSize(width: width)
     }
     
     private mutating func calculateSize(width: CGFloat) {
-        size = .init(width: width, height: width)
+        size = .init(
+            width: width,
+            height: [
+                layout.innerContentInsets.vertical,
+                layout.outerContentInsets.vertical,
+                layout.titleFont.lineHeight,
+                layout.spacingBetweenTitleAndValue,
+                layout.valueFont.lineHeight
+            ].reduce(0, +)
+        )
     }
 }
 
@@ -45,8 +56,6 @@ extension AttributesInformationCellViewModel: Equatable {
             .compare(by: \.id)
             .compare(by: \.title)
             .compare(by: \.value)
-            .compare(by: \.explanation)
-            .compare(by: \.description)
             .build()
     }
 }

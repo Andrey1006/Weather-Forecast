@@ -9,10 +9,12 @@ import Foundation
 
 struct MapInformationCellViewModel: BaseCellViewModel {
     var id: String
+    var currentLocationTemperature: String
     var size: CGSize = .zero
     
-    init(id: String, width: CGFloat) {
+    init(id: String, currentLocationTemperature: String, width: CGFloat) {
         self.id = id
+        self.currentLocationTemperature = currentLocationTemperature
         calculateSize(width: width)
     }
     
@@ -33,6 +35,7 @@ extension MapInformationCellViewModel: Equatable {
     static func == (lhs: MapInformationCellViewModel, rhs: MapInformationCellViewModel) -> Bool {
         return KeyPathEqualizer(lhs: lhs, rhs: rhs)
             .compare(by: \.id)
+            .compare(by: \.currentLocationTemperature)
             .build()
     }
 }

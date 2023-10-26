@@ -16,19 +16,31 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="erG-i8-ZWK">
-                    <rect key="frame" x="24" y="24" width="345" height="344"/>
+                    <rect key="frame" x="24" y="12" width="345" height="380"/>
                     <subviews>
+                        <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJi-Yx-DGc">
+                            <rect key="frame" x="0.0" y="0.0" width="345" height="380"/>
+                            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Xss-lR-kwA">
+                                <rect key="frame" x="0.0" y="0.0" width="345" height="380"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <blurEffect style="regular"/>
+                        </visualEffectView>
                         <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6rS-wM-l2y">
-                            <rect key="frame" x="16" y="16" width="313" height="312"/>
+                            <rect key="frame" x="16" y="16" width="313" height="348"/>
                             <standardMapConfiguration key="preferredConfiguration"/>
                         </mapView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
+                        <constraint firstItem="aJi-Yx-DGc" firstAttribute="leading" secondItem="erG-i8-ZWK" secondAttribute="leading" id="2Et-3T-XKe"/>
                         <constraint firstItem="6rS-wM-l2y" firstAttribute="top" secondItem="erG-i8-ZWK" secondAttribute="top" constant="16" id="Rjz-AI-cxR"/>
                         <constraint firstAttribute="bottom" secondItem="6rS-wM-l2y" secondAttribute="bottom" constant="16" id="Uel-1H-GvI"/>
                         <constraint firstItem="6rS-wM-l2y" firstAttribute="leading" secondItem="erG-i8-ZWK" secondAttribute="leading" constant="16" id="sT3-Qh-fUI"/>
+                        <constraint firstAttribute="bottom" secondItem="aJi-Yx-DGc" secondAttribute="bottom" id="tlA-am-YvJ"/>
                         <constraint firstAttribute="trailing" secondItem="6rS-wM-l2y" secondAttribute="trailing" constant="16" id="uA2-Eo-LF9"/>
+                        <constraint firstAttribute="trailing" secondItem="aJi-Yx-DGc" secondAttribute="trailing" id="y3S-b7-ETD"/>
+                        <constraint firstItem="aJi-Yx-DGc" firstAttribute="top" secondItem="erG-i8-ZWK" secondAttribute="top" id="y6J-xA-Le5"/>
                     </constraints>
                 </view>
             </subviews>
@@ -37,11 +49,12 @@
             <constraints>
                 <constraint firstItem="erG-i8-ZWK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="NNy-wc-h0j"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="erG-i8-ZWK" secondAttribute="trailing" constant="24" id="Wvt-4U-u17"/>
-                <constraint firstAttribute="bottom" secondItem="erG-i8-ZWK" secondAttribute="bottom" constant="24" id="bot-0C-PlJ"/>
-                <constraint firstItem="erG-i8-ZWK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="vc7-7p-UDE"/>
+                <constraint firstAttribute="bottom" secondItem="erG-i8-ZWK" secondAttribute="bottom" id="bot-0C-PlJ"/>
+                <constraint firstItem="erG-i8-ZWK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="vc7-7p-UDE"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="blurView" destination="aJi-Yx-DGc" id="88b-dy-LFX"/>
                 <outlet property="contentContainerView" destination="erG-i8-ZWK" id="xiF-ng-TWV"/>
                 <outlet property="mapView" destination="6rS-wM-l2y" id="jPq-S4-HDA"/>
             </connections>

@@ -8,6 +8,9 @@ import UIKit
 
 class DetailInformationCollectionCell: UICollectionViewCell, Reusable {
     let source: DetailInformationCellView = .loadFromNib()
+    
+    @Proxy(\DetailInformationCollectionCell.source.onTap)
+    var onTap: ((DetailInformationCellViewModel) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

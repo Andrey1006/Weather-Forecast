@@ -15,7 +15,6 @@ final class BriefInformationCellView: UIView, NibLoadable {
     @IBOutlet weak var valueLabel: UILabel!
     
     private(set) var viewModel: BriefInformationCellViewModel!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         initialSetup()
@@ -28,7 +27,7 @@ final class BriefInformationCellView: UIView, NibLoadable {
     func configure(viewModel: BriefInformationCellViewModel) {
         self.viewModel = viewModel
         titleLabel.text = viewModel.date
-        imageView.image = viewModel.image
+        imageView.setImage(url: URL(string: viewModel.image)!)
         valueLabel.text = viewModel.temperature
         apply(layout: viewModel.layout)
     }
