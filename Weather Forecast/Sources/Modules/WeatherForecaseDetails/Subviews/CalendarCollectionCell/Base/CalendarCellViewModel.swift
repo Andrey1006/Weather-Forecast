@@ -20,7 +20,7 @@ struct CalendarCellViewModel: BaseCellViewModel {
         id: String,
         dayOfTheWeek: String,
         date: String,
-        isSelected: Bool = false
+        isSelected: Bool
     ) {
         self.layout = layout
         self.id = id

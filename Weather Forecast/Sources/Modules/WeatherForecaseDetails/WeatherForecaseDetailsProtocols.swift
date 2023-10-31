@@ -29,9 +29,7 @@ protocol WeatherForecaseDetailsInteractorInput: AnyObject {
 // MARK: - WeatherForecaseDetailsInteractorOutput
 protocol WeatherForecaseDetailsInteractorOutput: AnyObject {
     /* Interactor -> Presenter */
-    func updateDataSource(weatherData: WeatherForecastDomainModel)
     func reloadDays(days: WeatherForecastDomainModel, index: Int)
-    func uppendCells(days: WeatherForecastDomainModel, index: Int) -> [CalendarCellViewModel]
 }
 
 // MARK: - WeatherForecaseDetailsViewInput

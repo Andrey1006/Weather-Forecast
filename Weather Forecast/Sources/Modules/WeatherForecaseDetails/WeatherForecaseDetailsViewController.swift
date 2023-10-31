@@ -105,10 +105,9 @@ extension WeatherForecaseDetailsViewController: WeatherForecaseDetailsViewInput 
             let interval = 2
             let selectedHour = index * interval
 
-            if selectedHour < weatherData.forecast[0].hourForecast.count {
-                let item = weatherData.forecast[0].hourForecast[selectedHour]
+            if selectedHour < weatherData.forecast[indexOfDay].hourForecast.count {
+                let item = weatherData.forecast[indexOfDay].hourForecast[selectedHour]
                 image.setImage(url: URL(string: "https:\(item.icon)")!)
-                print("https:\(item.icon)")
             }
         }
 
@@ -140,14 +139,13 @@ extension WeatherForecaseDetailsViewController: UICollectionViewDelegate {
         guard let itemViewModel: WeatherForecastDetailsKindCellViewModel = dataSource.itemViewModel(at: indexPath) else {
             return
         }
-        
+        self.indexOfDay = indexPath.item
         switch itemViewModel {
         case .dayOfTheWeek(let viewModel):
             cell.configure(as: CalendarCollectionCell.self, with: viewModel) { cell in
                 cell.onTap = { [weak self] viewModel in
-//                    self?.indexOfDay = indexPath.item
-//                    self?.output.viewDidLoad()
                     self?.output.didSelectDay(id: viewModel.id)
+//                    self?.indexOfDay = indexPath.item
                     print(viewModel.id)
                 }
             }

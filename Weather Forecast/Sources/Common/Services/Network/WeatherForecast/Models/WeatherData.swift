@@ -56,12 +56,16 @@ struct FullDayWeatherForecastRemoteModel: Decodable {
 struct DayWeatherForecastRemoteModel: Decodable {
     var maxTempereture: Double
     var minTempereture: Double
+    var humidity: Double
+    var totalPrecipitation: Double
     var condition: WeatherConditionRemoteModel
     var uVIndex: Double
     
     private enum CodingKeys: String, CodingKey {
         case maxTempereture = "maxtemp_c"
         case minTempereture = "mintemp_c"
+        case humidity = "avghumidity"
+        case totalPrecipitation = "totalprecip_mm"
         case condition
         case uVIndex = "uv"
     }

@@ -90,7 +90,7 @@ extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
                         .init(
                             id: "6543",
                             title: "Киев",
-                            value: String(weatherData.currentHourWeather.temperature),
+                            value: "\(weatherData.currentHourWeather.temperature)°",
                             weatherPhenomenon: weatherData.currentHourWeather.text,
                             maxAndMinTemperature: "Макс.:\(String(weatherData.forecast[0].maxTempereture))°,мин.:\(String(weatherData.forecast[0].minTempereture))°",
                             width: viewModel.viewWidth
@@ -154,15 +154,15 @@ extension WeatherForecastPresenter: WeatherForecastInteractorOutput {
                         .init(
                             id: "4",
                             title: "Оcaдки",
-                            value: "\(String(weatherData.currentHourWeather.precipitationMm)) ММ",
+                            value: "\(String(weatherData.currentHourWeather.totalPrecipitation)) ММ",
                             width: viewModel.viewWidth / 2
                         )
                     ),
                     .attributes(
                         .init(
                             id: "6",
-                            title: "Ощущается как",
-                            value: "\(String(weatherData.currentHourWeather.precipitationMm))%",
+                            title: "Влажность",
+                            value: "\(String(weatherData.currentHourWeather.humidity)) %",
                             width: viewModel.viewWidth / 2
                         )
                     ),

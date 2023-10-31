@@ -17,7 +17,6 @@ final class CalendarCellView: UIView, NibLoadable {
     private(set) var viewModel: CalendarCellViewModel!
     
     var onTap: ((CalendarCellViewModel) -> Void)?
-    var isSelected: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,7 +33,11 @@ final class CalendarCellView: UIView, NibLoadable {
         self.viewModel = viewModel
         dayOfTheWeekLabel.text = viewModel.dayOfTheWeek
         dateLabel.text = viewModel.date
-        isSelected = viewModel.isSelected
+        if viewModel.isSelected {
+            dateContaierView.backgroundColor = .blue
+        } else {
+            dateContaierView.backgroundColor = .clear
+        }
         apply(layout: viewModel.layout)
     }
     
@@ -45,13 +48,6 @@ final class CalendarCellView: UIView, NibLoadable {
     }
     
     @objc func didTapOnCell() {
-        print(isSelected)
-        if isSelected {
-            dateContaierView.backgroundColor = .blue
-        } else {
-            dateContaierView.backgroundColor = .clear
-        }
-//        isSelected.toggle()
         onTap?(viewModel)
     }
 }

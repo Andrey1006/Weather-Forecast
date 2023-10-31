@@ -38,6 +38,8 @@ struct HourWeatherForecast {
     var feelslike: Int
     var precipitationMm: Int
     var pressureMb: Int
+    var humidity: Int
+    var totalPrecipitation: Double
     var visibilityKm: Int
     var windKph: Int
     var windDirection: String

@@ -21,21 +21,11 @@ final class WeatherForecaseDetailsInteractor {
 // MARK: - WeatherForecaseDetailsInteractorInputProtocol
 extension WeatherForecaseDetailsInteractor: WeatherForecaseDetailsInteractorInput {
     func viewDidLoad() {
-        output.updateDataSource(weatherData: weatherForecast)
+        output.reloadDays(days: weatherForecast, index: 0)
     }
-    
-    //var selectedDay: String = ""
-//        var days: [CalendarCellViewModel] = []
-    //
-    //func updateSelectedDay(id: String) {
-//        guard let index = days.firstIndex(where: { $0.id == id }) else {
-//            return
-//        }
-    //
-    //    view.reloadDays(days: days, index: index)
-    
+
     func didSelectDay(id: String) {
-        guard let index = weatherForecast.forecast.firstIndex(where: { $0.id == id }) else {
+        guard let index = weatherForecast.forecast.firstIndex(where: { $0.date == id }) else {
             return
         }
         
